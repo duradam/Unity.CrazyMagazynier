@@ -1,20 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 using UnityStandardAssets.CrossPlatformInput;
 
-public class Obracaniekierownicy : MonoBehaviour
+public class Obracaniekierownicy : MonoBehaviourPun
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
-        float h = CrossPlatformInputManager.GetAxis("Horizontal");
-        transform.Rotate(new Vector3(0,h, 0));
+        if (photonView.IsMine)
+        {
+            float h = CrossPlatformInputManager.GetAxis("Horizontal");
+            transform.Rotate(new Vector3(0, h, 0));
+        }
     }
 }

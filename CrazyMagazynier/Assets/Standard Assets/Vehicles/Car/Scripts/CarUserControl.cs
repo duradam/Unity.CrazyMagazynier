@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
@@ -5,7 +6,7 @@ using UnityStandardAssets.CrossPlatformInput;
 namespace UnityStandardAssets.Vehicles.Car
 {
     [RequireComponent(typeof (CarController))]
-    public class CarUserControl : MonoBehaviour
+    public class CarUserControl : MonoBehaviourPun
     {
         private CarController m_Car; // the car controller we want to use
 
@@ -19,12 +20,14 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void FixedUpdate()
         {
+            if (!base.photonView.IsMine)
+                return;
             // pass the input to the car!
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             float v = CrossPlatformInputManager.GetAxis("Vertical");
 #if !MOBILE_INPUT
             float handbrake = CrossPlatformInputManager.GetAxis("Jump");
-            m_Car.Move(h, v, v, handbrake);
+            m_Car.Move(-h, v, v, handbrake);
 #else
             m_Car.Move(h, v, v, 0f);
 #endif
