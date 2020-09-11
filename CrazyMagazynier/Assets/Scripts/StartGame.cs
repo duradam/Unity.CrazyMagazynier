@@ -7,8 +7,11 @@ public class StartGame : MonoBehaviourPunCallbacks
 {
     public GameObject _prefab;
 
+    public Camera maincamera;
+
     private void AwakePlayer()
     {
+        Camera mc = Camera.main;
         GameObject forklift = null;
         if (PhotonNetwork.CurrentRoom.PlayerCount==1)
         {
@@ -23,13 +26,18 @@ public class StartGame : MonoBehaviourPunCallbacks
             forklift = MasterManager.NetworkInstantiate(_prefab, position, q);
         }
 
-        var cameraManager = forklift.GetComponent<CameraManager>();
-        cameraManager.Camera = Camera.main;
-        var anim = Camera.main.GetComponent<Animation>();
-        anim.enabled = false;
-        //var camRot = forklift.transform.localRotation;
-        //camRot.x += 27.4f;
-        //Camera.main.transform.localRotation  = camRot;
+        foreach (var cam in Camera.allCameras)
+        {
+            if (cam.tag != "MainCamera")
+                cam.enabled = false;
+        }
+        maincamera.enabled = true;
+
+
+
+        //GameObject cam1 = Application.find GameObject.fin .FindWithTag("MainCamera");
+
+
     }
 
     private void Start(){
